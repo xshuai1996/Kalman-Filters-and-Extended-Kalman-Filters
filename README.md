@@ -11,12 +11,10 @@ Implementation of the Kalman filter is included in file *KF.py*, with an instanc
 
 We want to track the 1-D position of an object of unknown dynamics with the constant jerk model, i.e. $$x(t) = [p_t, v_t, a_t, j_t]^T$$ (position, velocity, acceleration and jerk).
 
- - ![](http://latex.codecogs.com/gif.latex?\\frac{1}{1+sin(x)})
-
- - $$x(t + 1) = Ax(t) + w(t)$$, where $$w(t)$$ is fictitious noise
- - $$z(t) = Cx(t) + v(t)$$, where $$v(t)$$ is sensor noise
- - True position $$p(t) = sin(0.1 * t)$$
- - Sensor data $$p(t) = p(t) + v_m(t)$$, where $$v_m(t)$$ is generated sensor noise
+ - ![](http://latex.codecogs.com/gif.latex?\\x(t + 1) = Ax(t) + w(t)), where ![](http://latex.codecogs.com/gif.latex?\\w(t)) is fictitious noise
+ - ![](http://latex.codecogs.com/gif.latex?\\z(t) = Cx(t) + v(t)), where ![](http://latex.codecogs.com/gif.latex?\\v(t)) is sensor noise
+ - True position ![](http://latex.codecogs.com/gif.latex?\\p(t) = sin(0.1 * t))
+ - Sensor data ![](http://latex.codecogs.com/gif.latex?\\p(t) = p(t) + v_m(t)), where ![](http://latex.codecogs.com/gif.latex?\\v_m(t)) is generated sensor noise
 
 Values are defined in *KF.py*. The prediction MSE is shwon below:
 ![image](./images/KF_MSE.png)
