@@ -11,7 +11,7 @@ Implementation of the Kalman filter is included in file *KF.py*, with an instanc
 
 We want to track the 1-D position of an object of unknown dynamics with the constant jerk model, i.e. $$x(t) = [p_t, v_t, a_t, j_t]^T$$ (position, velocity, acceleration and jerk).
 
- - http://latex.codecogs.com/gif.latex?\frac{\partial J}{x(t + 1) = Ax(t) + w(t)$$}
+ - ![](http://latex.codecogs.com/gif.latex?\\frac{1}{1+sin(x)})
 
  - $$x(t + 1) = Ax(t) + w(t)$$, where $$w(t)$$ is fictitious noise
  - $$z(t) = Cx(t) + v(t)$$, where $$v(t)$$ is sensor noise
