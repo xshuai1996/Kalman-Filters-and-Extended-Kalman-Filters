@@ -3,9 +3,6 @@ import numpy as np
 
 
 class KalmanFilter():
-    """
-    Implementation of a Kalman Filter.
-    """
     def __init__(self, mu, sigma, A, C, R=0., Q=0.):
         """
         :param mu: prior mean
@@ -15,31 +12,23 @@ class KalmanFilter():
         :param R: process noise
         :param Q: measurement noise
         """
-        # prior
         self.mu = mu
         self.sigma = sigma
         self.mu_init = mu
         self.sigma_init = sigma
-        # process model
         self.A = A
         self.R = R
-        # measurement model
         self.C = C
         self.Q = Q
 
     def reset(self):
-        """
-        Reset belief state to initial value.
-        """
         self.mu = self.mu_init
         self.sigma = self.sigma_init
 
     def run(self, sensor_data):
         """
         Run the Kalman Filter using the given sensor updates.
-
         :param sensor_data: array of T sensor updates as a TxS array.
-
         :returns: A tuple of predicted means (as a TxD array) and predicted
                   covariances (as a TxDxD array) representing the KF's belief
                   state AFTER each update/predict cycle, over T timesteps.
@@ -54,7 +43,6 @@ class KalmanFilter():
         return (mus, sigmas)
 
     def _predict(self):
-        # FILL in your code here
         est_mu = self.A @ self.mu
         est_sigma = self.A @ self.sigma @ self.A.T + self.R
         return est_mu, est_sigma
@@ -69,7 +57,6 @@ class KalmanFilter():
 def plot_prediction(t, ground_truth, measurement, predict_mean, predict_cov, img_name):
     """
     Plot ground truth vs. predicted value.
-
     :param t: 1-dimensional array representing timesteps, in seconds.
     :param ground_truth: Tx1 array of ground truth values
     :param measurement: Tx1 array of sensor values
@@ -96,10 +83,8 @@ def plot_prediction(t, ground_truth, measurement, predict_mean, predict_cov, img
     plt.show()
 
 
-def plot_mse(t, ground_truth, predict_means, img_name):
+def plot_mse(t, ground_truth, predict_means):
     """
-    Plot MSE of your KF over many trials.
-
     :param t: 1-dimensional array representing timesteps, in seconds.
     :param ground_truth: Tx1 array of ground truth values
     :param predict_means: NxTxD array of T mean vectors over N trials
@@ -116,42 +101,7 @@ def plot_mse(t, ground_truth, predict_means, img_name):
     plt.show()
 
 
-def problem2a():
-    # FILL in your code here
-    delta_t = 0.1
-    A = np.array([[1, 0.1,  0,  0],
-                  [0,  1,  0.1, 0],
-                  [0,  0,   1, 0.1],
-                  [0,  0,   0,  1]])
-    C = np.array([[1, 0, 0, 0]])
-    mu = np.array([[5, 1, 0, 0]]).T
-    sigma = np.array([[10, 0, 0, 0],
-                    [0, 10, 0, 0],
-                    [0, 0, 10, 0],
-                    [0, 0, 0, 10]])
-    Q = 1.0
-    T = 100
-    num_trails = 10000
-    t = delta_t * np.arange(1, T + 1).reshape((-1, 1))
-
-    ground_truth = np.sin(0.1 * t)
-    KF = KalmanFilter(mu, sigma, A, C, 0, Q)
-    sensor_data = ground_truth + np.random.normal(0, Q, ground_truth.shape)
-    predict_mean, predict_cov = KF.run(sensor_data)
-    plot_prediction(t.reshape(-1), ground_truth, sensor_data, predict_mean,
-                    predict_cov, "problem2a_kf_estimation.png")
-
-    predict_means = np.zeros((num_trails, T, A.shape[0]))
-    for trail in range(num_trails):
-        KF.reset()
-        sensor_data = ground_truth + np.random.normal(0, Q, ground_truth.shape)
-        predict_mean, _ = KF.run(sensor_data)
-        predict_means[trail] = predict_mean
-    plot_mse(t.reshape(-1), ground_truth, predict_means, "problem2a_kf_mse.png")
-
-
-def problem2b():
-    # FILL in your code here
+def an_instance():
     delta_t = 0.1
     A = np.array([[1, 0.1,  0,  0],
                   [0,  1,  0.1, 0],
@@ -181,8 +131,7 @@ def problem2b():
         sensor_data = ground_truth + np.random.normal(0, Q, ground_truth.shape)
         predict_mean, _ = KF.run(sensor_data)
         predict_means[trail] = predict_mean
-    plot_mse(t.reshape(-1), ground_truth, predict_means, "problem2b_kf_mse.png")
+    plot_mse(t.reshape(-1), ground_truth, predict_means)
 
 if __name__ == '__main__':
-    problem2a()
-    problem2b()
+    an_instance()

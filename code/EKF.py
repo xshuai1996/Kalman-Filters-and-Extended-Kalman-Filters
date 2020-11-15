@@ -3,9 +3,6 @@ import numpy as np
 
 
 class ExtendedKalmanFilter():
-    """
-    Implementation of an Extended Kalman Filter.
-    """
     def __init__(self, mu, sigma, g, g_jac, h, h_jac, R=0., Q=0.):
         """
         :param mu: prior mean
@@ -17,33 +14,25 @@ class ExtendedKalmanFilter():
         :param R: process noise
         :param Q: measurement noise
         """
-        # prior
         self.mu = mu
         self.sigma = sigma
         self.mu_init = mu
         self.sigma_init = sigma
-        # process model
         self.g = g
         self.g_jac = g_jac
         self.R = R
-        # measurement model
         self.h = h
         self.h_jac = h_jac
         self.Q = Q
 
     def reset(self):
-        """
-        Reset belief state to initial value.
-        """
         self.mu = self.mu_init
         self.sigma = self.sigma_init
 
     def run(self, sensor_data):
         """
         Run the Kalman Filter using the given sensor updates.
-
         :param sensor_data: array of T sensor updates as a TxS array.
-
         :returns: A tuple of predicted means (as a TxD array) and predicted
                   covariances (as a TxDxD array) representing the KF's belief
                   state AFTER each update/predict cycle, over T timesteps.
@@ -70,10 +59,9 @@ class ExtendedKalmanFilter():
         self.sigma = (np.identity(2) - K @ H) @ est_sigma
 
 
-def plot_prediction(t, ground_truth, predict_mean, predict_cov, img_name):
+def plot_prediction(t, ground_truth, predict_mean, predict_cov):
     """
     Plot ground truth vs. predicted value.
-
     :param t: 1-dimensional array representing timesteps, in seconds.
     :param ground_truth: Tx1 array of ground truth values
     :param predict_mean: TxD array of mean vectors
@@ -112,11 +100,10 @@ def plot_prediction(t, ground_truth, predict_mean, predict_cov, img_name):
     plt.xlabel("time (s)")
     plt.ylabel(r"$\alpha$")
     plt.title(r"EKF estimation: $\alpha$")
-    plt.savefig(img_name)
     plt.show()
 
 
-def problem3():
+def an_instance():
     Q = 1
     R = np.array([0.5, 0, 0, 0]).reshape((2, 2))
     true_x0 = 2
@@ -154,7 +141,7 @@ def problem3():
     new_ground_truth[:, 0:1] = ground_truth
     new_ground_truth[:, 1:2] = true_alpha * np.ones((T, 1))
     print(predict_mean[:, 1])
-    plot_prediction(t.reshape((-1)), new_ground_truth, predict_mean, predict_cov, "problem3_ekf_estimation.png")
+    plot_prediction(t.reshape((-1)), new_ground_truth, predict_mean, predict_cov)
 
 if __name__ == '__main__':
-    problem3()
+    an_instance()
